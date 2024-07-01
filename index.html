@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plateforme de Partage - Pour Scientifiques</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<style>
+<style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background-color: #007bff;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 10px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+
+        #deleteAllButton {
+            background-color: #dc3545;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            float: right;
+            margin-bottom: 20px;
+        }
+
+        #deleteAllButton:hover {
+            background-color: #c82333;
+        }
+
+        #postForm {
+            margin-bottom: 20px;
+        }
+
+        #postText {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: vertical;
+        }
+
+        input[type="file"] {
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .post {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+            position: relative;
+        }
+
+        .post img, .post video {
+            max-width: 100%;
+            border-radius: 5px;
+            display: block;
+            margin: 10px auto;
+        }
+
+        .post button {
+            display: block;
+            margin: 10px auto;
+        }
+
+        .deletePostButton {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #dc3545;
+            color: #fff;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .deletePostButton:hover {
+            background-color: #c82333;
+        }
+
+        .comments {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #ccc;
+        }
+
+        .comment {
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .comment strong {
+            font-weight: bold;
+        }
+
+        .reactions {
+            margin-top: 10px;
+        }
+
+        .reaction {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .reaction:hover {
+            text-decoration: underline;
+        }
+
+        form {
+            margin-top: 10px;
+        }
+
+        input[type="text"], input[type="file"] {
+            width: calc(100% - 82px);
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px 0 0 5px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        input[type="text"]:focus, input[type="file"]:focus {
+            border-color: #007bff;
+        }
+
+        button[type="submit"] {
+            width: 80px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 8px;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .profile-container {
+            margin-bottom: 20px;
+        }
+
+        .profile-container input {
+            width: calc(100% - 110px);
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .friend-request {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f1f1f1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-container {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            right: 20px;
+            width: 300px;
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            z-index: 1000;
+        }
+
+        .chat-container.active {
+            display: block;
+        }
+
+        .chat-messages {
+            height: 200px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+
+        .chat-message {
+            margin-bottom: 10px;
+        }
+
+        .chat-message strong {
+            font-weight: bold;
+        }
+
+        .chat-input {
+            display: flex;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px 0 0 5px;
+        }
+
+        .chat-input button {
+            padding: 8px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+        }
+
+        .chat-input button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</style>
+<body>
+    <div class="navbar">
+        <h1>Plateforme de Partage</h1>
+        <a href="videos.html">Vidéos</a>
+    </div>
+
+    <div class="container">
+        <div class="profile-container">
+            <h2>Créer Profil</h2>
+            <input type="text" id="profileName" placeholder="Nom de profil">
+            <input type="file" id="profilePicture" accept="image/*">
+            <button onclick="createProfile()">Créer</button>
+        </div>
+        <button id="deleteAllButton" onclick="deleteAllPosts()">Supprimer tous les messages</button>
+        <h1>Messages, Images et Fichiers</h1>
+        <div id="postForm">
+            <textarea id="postText" placeholder="Que voulez-vous partager aujourd'hui ?"></textarea>
+            <input type="file" id="postFile" accept="image/*,video/*">
+            <button onclick="createPost()">Partager</button>
+        </div>
+        <div id="postsContainer"></div>
+    </div>
+
+    <div id="chatContainer" class="chat-container">
+        <div class="chat-messages" id="chatMessages"></div>
+        <div class="chat-input">
+            <input type="text" id="chatInput" placeholder="Tapez un message...">
+            <button onclick="sendMessage()">Envoyer</button>
+        </div>
+    </div>
+
+    <script>
+        let posts = [];
+        let friends = [];
+        let friendRequests = [];
+        let currentUser = null;
+        let currentChatFriend = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('posts')) {
+                posts = JSON.parse(localStorage.getItem('posts'));
+                displayPosts();
+            }
+
+            if (localStorage.getItem('friends')) {
+                friends = JSON.parse(localStorage.getItem('friends'));
+            }
+
+            if (localStorage.getItem('friendRequests')) {
+                friendRequests = JSON.parse(localStorage.getItem('friendRequests'));
+            }
+
+            if (localStorage.getItem('currentUser')) {
+                currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                document.querySelector('.profile-container').style.display = 'none';
+            }
+
+            displayFriendRequests();
+        });
+
+        function createProfile() {
+            const profileName = document.getElementById('profileName').value;
+            const profilePicture = document.getElementById('profilePicture').files[0];
+
+            if (profileName && profilePicture) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    currentUser = {
+                        name: profileName,
+                        picture: e.target.result
+                    };
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    document.querySelector('.profile-container').style.display = 'none';
+                };
+                reader.readAsDataURL(profilePicture);
+            } else {
+                alert('Veuillez remplir tous les champs.');
+            }
+        }
+
+        function createPost() {
+            const postText = document.getElementById('postText').value;
+            const postFile = document.getElementById('postFile').files[0];
+
+            if (!postText && !postFile) {
+                alert('Veuillez entrer du texte ou sélectionner un fichier.');
+                return;
+            }
+
+            const post = {
+                id: Date.now(),
+                user: currentUser,
+                text: postText,
+                file: postFile ? URL.createObjectURL(postFile) : null,
+                fileType: postFile ? postFile.type.split('/')[0] : null,
+                comments: [],
+                reactions: { like: 0, love: 0, haha: 0, wow: 0, sad: 0, angry: 0 }
+            };
+
+            posts.unshift(post);
+            localStorage.setItem('posts', JSON.stringify(posts));
+            displayPosts();
+            resetForm();
+        }
+
+        function displayPosts() {
+            const postsContainer = document.getElementById('postsContainer');
+            postsContainer.innerHTML = '';
+
+            posts.forEach(post => {
+                const postElement = document.createElement('div');
+                postElement.classList.add('post');
+                postElement.innerHTML = `
+                    <button class="deletePostButton" onclick="deletePost(${post.id})">Supprimer</button>
+                    <p><strong>${post.user.name}</strong></p>
+                    <img src="${post.user.picture}" alt="Profile Picture" style="width: 50px; height: 50px; border-radius: 50%;">
+                    <p>${post.text}</p>
+                    ${post.file && post.fileType === 'image' ? `<img src="${post.file}" alt="Post Image"><button onclick="downloadFile('${post.file}', 'image.jpg')">Télécharger</button>` : ''}
+                    ${post.file && post.fileType === 'video' ? `<video controls><source src="${post.file}" type="video/mp4"></video><button onclick="downloadFile('${post.file}', 'video.mp4')">Télécharger</button>` : ''}
+                    <div class="reactions">
+                        <span class="reaction" onclick="react(${post.id}, 'like')">👍 (${post.reactions.like})</span>
+                        <span class="reaction" onclick="react(${post.id}, 'love')">❤️ (${post.reactions.love})</span>
+                        <span class="reaction" onclick="react(${post.id}, 'haha')">😂 (${post.reactions.haha})</span>
+                        <span class="reaction" onclick="react(${post.id}, 'wow')">😮 (${post.reactions.wow})</span>
+                        <span class="reaction" onclick="react(${post.id}, 'sad')">😢 (${post.reactions.sad})</span>
+                        <span class="reaction" onclick="react(${post.id}, 'angry')">😡 (${post.reactions.angry})</span>
+                    </div>
+                    <div class="comments">
+                        ${post.comments.map(comment => `
+                            <div class="comment">
+                                <strong>${comment.user}:</strong> ${comment.text}
+                            </div>
+                        `).join('')}
+                        <form onsubmit="addComment(event, ${post.id})">
+                            <input type="text" placeholder="Ajouter un commentaire..." required>
+                            <button type="submit">Commenter</button>
+                        </form>
+                    </div>
+                `;
+                postsContainer.appendChild(postElement);
+            });
+        }
+
+        function react(postId, reactionType) {
+            const post = posts.find(post => post.id === postId);
+            if (post) {
+                const userId = currentUser.name;
+                const userReactions = JSON.parse(localStorage.getItem('userReactions')) || {};
+
+                if (!userReactions[userId]) {
+                    userReactions[userId] = {};
+                }
+
+                if (!userReactions[userId][postId]) {
+                    userReactions[userId][postId] = true;
+
+                    post.reactions[reactionType]++;
+                    localStorage.setItem('posts', JSON.stringify(posts));
+                    localStorage.setItem('userReactions', JSON.stringify(userReactions));
+                    displayPosts();
+                } else {
+                    alert('Vous avez déjà réagi à ce post.');
+                }
+            }
+        }
+
+        function addComment(event, postId) {
+            event.preventDefault();
+            const post = posts.find(post => post.id === postId);
+            if (post) {
+                const commentText = event.target.querySelector('input').value;
+                post.comments.push({ user: currentUser.name, text: commentText });
+                localStorage.setItem('posts', JSON.stringify(posts));
+                displayPosts();
+                event.target.reset();
+            }
+        }
+
+        function deletePost(postId) {
+            posts = posts.filter(post => post.id !== postId);
+            localStorage.setItem('posts', JSON.stringify(posts));
+            displayPosts();
+        }
+
+        function deleteAllPosts() {
+            posts = [];
+            localStorage.setItem('posts', JSON.stringify(posts));
+            displayPosts();
+        }
+
+        function resetForm() {
+            document.getElementById('postText').value = '';
+            document.getElementById('postFile').value = null;
+        }
+
+        function downloadFile(fileUrl, filename) {
+            const link = document.createElement('a');
+            link.href = fileUrl;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function searchFriends(event) {
+            const searchTerm = event.target.value.toLowerCase();
+            const friendRequestContainer = document.getElementById('friendRequestContainer');
+            friendRequestContainer.innerHTML = '';
+
+            friends.forEach(friend => {
+                if (friend.name.toLowerCase().includes(searchTerm)) {
+                    const requestElement = document.createElement('div');
+                    requestElement.classList.add('friend-request');
+                    requestElement.innerHTML = `
+                        <span>${friend.name}</span>
+                        <button onclick="sendFriendRequest('${friend.name}')">Envoyer une invitation</button>
+                    `;
+                    friendRequestContainer.appendChild(requestElement);
+                }
+            });
+        }
+
+        function sendFriendRequest(friendName) {
+            const request = { from: currentUser.name, to: friendName };
+            friendRequests.push(request);
+            localStorage.setItem('friendRequests', JSON.stringify(friendRequests));
+            displayFriendRequests();
+        }
+
+        function displayFriendRequests() {
+            const friendRequestContainer = document.getElementById('friendRequestContainer');
+            friendRequestContainer.innerHTML = '';
+            friendRequests.forEach(request => {
+                if (request.to === currentUser.name) {
+                    const requestElement = document.createElement('div');
+                    requestElement.classList.add('friend-request');
+                    requestElement.innerHTML = `
+                        <span>${request.from}</span>
+                        <button onclick="acceptFriendRequest('${request.from}')">Accepter</button>
+                    `;
+                    friendRequestContainer.appendChild(requestElement);
+                }
+            });
+        }
+
+        function acceptFriendRequest(friendName) {
+            friends.push({ name: friendName });
+            friendRequests = friendRequests.filter(request => request.from !== friendName || request.to !== currentUser.name);
+            localStorage.setItem('friends', JSON.stringify(friends));
+            localStorage.setItem('friendRequests', JSON.stringify(friendRequests));
+            displayFriendRequests();
+        }
+
+        function openChat(friendName) {
+            currentChatFriend = friendName;
+            document.getElementById('chatContainer').classList.add('active');
+            loadChatMessages();
+        }
+
+        function loadChatMessages() {
+            const chatMessagesContainer = document.getElementById('chatMessages');
+            chatMessagesContainer.innerHTML = '';
+
+            const messages = JSON.parse(localStorage.getItem('chatMessages')) || {};
+            const chatMessages = messages[currentUser.name + '_' + currentChatFriend] || [];
+
+            chatMessages.forEach(message => {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('chat-message');
+                messageElement.innerHTML = `
+                    <strong>${message.user}:</strong> ${message.text}
+                `;
+                chatMessagesContainer.appendChild(messageElement);
+            });
+        }
+
+        function sendMessage() {
+            const chatInput = document.getElementById('chatInput');
+            const messageText = chatInput.value;
+            chatInput.value = '';
+
+            if (messageText) {
+                const messages = JSON.parse(localStorage.getItem('chatMessages')) || {};
+                const chatKey = currentUser.name + '_' + currentChatFriend;
+                const reverseChatKey = currentChatFriend + '_' + currentUser.name;
+
+                if (!messages[chatKey]) {
+                    messages[chatKey] = [];
+                }
+                if (!messages[reverseChatKey]) {
+                    messages[reverseChatKey] = [];
+                }
+
+                const message = { user: currentUser.name, text: messageText };
+                messages[chatKey].push(message);
+                messages[reverseChatKey].push(message);
+                localStorage.setItem('chatMessages', JSON.stringify(messages));
+                loadChatMessages();
+            }
+        }
+    </script>
+</body>
+</html>
